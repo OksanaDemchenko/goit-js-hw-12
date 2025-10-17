@@ -6,9 +6,8 @@ const controls = document.querySelector('.controls');
 const loader = controls.querySelector('.loader');
 const loadMoreBtn = controls.querySelector('.load-more');
 
-
-let lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
+export const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: () => '',
   captionDelay: 250,
 });
 
@@ -18,7 +17,7 @@ export function createGallery(images) {
       image => `
       <li class="gallery-item">
         <a href="${image.largeImageURL}">
-          <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy">
+          <img src="${image.webformatURL}" alt="" loading="lazy">
 
           <div class="gallery-categories">
             <span>Likes</span>
@@ -39,9 +38,9 @@ export function createGallery(images) {
     )
     .join('');
 
- 
+
   galleryContainer.insertAdjacentHTML('beforeend', markup);
-  lightbox.refresh();
+  lightbox.refresh(); 
 }
 
 export function clearGallery() {

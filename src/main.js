@@ -6,11 +6,10 @@ import {
   hideLoader,
   showLoadMoreButton,
   hideLoadMoreButton,
+  lightbox, 
 } from './js/render-functions.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const form = document.querySelector('.form');
 const loadMoreBtn = document.querySelector('.load-more');
@@ -19,11 +18,6 @@ let query = '';
 let page = 1;
 const per_page = 15;
 let totalHits = 0;
-
-let lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
@@ -54,7 +48,6 @@ form.addEventListener('submit', async e => {
     }
 
     createGallery(data.hits);
-    lightbox.refresh();
     totalHits = data.totalHits;
 
     if (page * per_page < totalHits) {
@@ -67,7 +60,6 @@ form.addEventListener('submit', async e => {
         timeout: 5000,
         close: true,
       });
-     
     }
   } catch (error) {
     hideLoader();
@@ -86,7 +78,6 @@ loadMoreBtn.addEventListener('click', async () => {
     const data = await getImagesByQuery(query, page, per_page);
     hideLoader();
     createGallery(data.hits);
-    lightbox.refresh();
 
     const { height: cardHeight } = document
       .querySelector('.gallery')
@@ -105,7 +96,6 @@ loadMoreBtn.addEventListener('click', async () => {
         timeout: 5000,
         close: true,
       });
-      
     }
   } catch (error) {
     hideLoader();
