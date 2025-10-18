@@ -6,11 +6,12 @@ import {
   hideLoader,
   showLoadMoreButton,
   hideLoadMoreButton,
+  showLoadMoreLoading,
+  hideLoadMoreLoading,
+  refreshLightbox,
 } from './js/render-functions.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const form = document.querySelector('.form');
 const loadMoreBtn = document.querySelector('.load-more');
@@ -19,12 +20,6 @@ let query = '';
 let page = 1;
 const per_page = 15;
 let totalHits = 0;
-
-
-let lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt', 
-  captionDelay: 250,
-});
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
@@ -56,7 +51,7 @@ form.addEventListener('submit', async e => {
     }
 
     createGallery(data.hits);
-    lightbox.refresh();
+    refreshLightbox(); 
     totalHits = data.totalHits;
 
     if (page * per_page < totalHits) {
@@ -76,28 +71,30 @@ form.addEventListener('submit', async e => {
       title: 'Error',
       message: 'Something went wrong. Please try again later.',
     });
+    console.error(error);
   }
 });
 
+
 loadMoreBtn.addEventListener('click', async () => {
   page += 1;
-  showLoader();
+  showLoadMoreLoading();
 
   try {
     const data = await getImagesByQuery(query, page, per_page);
-    hideLoader();
+    hideLoadMoreLoading();
 
     createGallery(data.hits);
-    lightbox.refresh(); 
+    refreshLightbox(); 
 
-
-    const { height: cardHeight } = document
-      .querySelector('.gallery')
-      .firstElementChild.getBoundingClientRect();
-    window.scrollBy({
-      top: cardHeight * 2,
-      behavior: 'smooth',
-    });
+    const firstCard = document.querySelector('.gallery .gallery-item');
+    if (firstCard) {
+      const { height: cardHeight } = firstCard.getBoundingClientRect();
+      window.scrollBy({
+        top: cardHeight * 2,
+        behavior: 'smooth',
+      });
+    }
 
     if (page * per_page >= totalHits) {
       hideLoadMoreButton();
@@ -108,12 +105,15 @@ loadMoreBtn.addEventListener('click', async () => {
         timeout: 5000,
         close: true,
       });
+    } else {
+      showLoadMoreButton();
     }
   } catch (error) {
-    hideLoader();
+    hideLoadMoreLoading();
     iziToast.error({
       title: 'Error',
       message: 'Failed to load more images.',
     });
+    console.error(error);
   }
 });

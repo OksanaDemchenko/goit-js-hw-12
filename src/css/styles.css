@@ -2,17 +2,14 @@
 @import url('./reset.css');
 @import url('./base.css');
 
-/* Загальний стиль форми */
-/* Контейнер форми */
 .form {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px; /* відстань між інпутом і кнопкою */
+  gap: 8px;
   margin: 28px auto;
 }
 
-/* Поле введення */
 .form input[type='text'] {
   width: 272px;
   height: 40px;
@@ -25,22 +22,19 @@
   box-sizing: border-box;
 }
 
-/* Hover для інпуту */
 .form input[type='text']:hover {
   border-color: #000000;
 }
 
-/* Focus для інпуту */
 .form input[type='text']:focus {
   border-color: #4e75ff;
   box-shadow: 0 0 0 1px #4e75ff;
   outline: none;
 }
 
-/* Кнопка пошуку */
 .form button {
   width: 91px;
-  height: 42px; /* трішки більше для компенсації border інпута */
+  height: 42px;
   border-radius: 8px;
   padding: 8px 16px;
   background: #4e75ff;
@@ -84,7 +78,6 @@
   margin-bottom: 40px;
 }
 
-/* Mobile: 1 column */
 .gallery {
   grid-template-columns: 1fr;
   padding: 0 20px;
@@ -97,7 +90,6 @@
   }
 }
 
-/* Tablet: 2 columns */
 @media (min-width: 768px) {
   .gallery {
     grid-template-columns: repeat(2, 1fr);
@@ -108,7 +100,6 @@
   }
 }
 
-/* Desktop: 3 columns */
 @media (min-width: 1158px) {
   .gallery {
     grid-template-columns: repeat(3, 1fr);
